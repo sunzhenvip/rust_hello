@@ -42,12 +42,17 @@ path = "src/test6.rs"
 name = "test7"
 path = "src/test7.rs"
 
+[[bin]]
+name = "test8"
+path = "src/test8.rs"
+
 
 [dependencies]
 # cargo add async-std
 async-std = "1.13.1"
 # cargo add futures
 futures = "0.3.31"
+thiserror = "1.0.61"
 # 开启全部功能的tokio，
 # 在了解tokio之后，只开启需要的特性，减少编译时间，减小编译大小
 # cargo add tokio -F full
