@@ -48,6 +48,7 @@ path = "src/test8.rs"
 
 
 [dependencies]
+anyhow = "1.0.98"
 # cargo add async-std
 async-std = "1.13.1"
 # cargo add futures
