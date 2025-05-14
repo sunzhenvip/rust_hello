@@ -3,4 +3,52 @@ name = "hello"
 version = "0.1.0"
 edition = "2021"
 
+[[bin]]
+name = "interpreter"
+path = "src/main_interpreter.rs"
+
+
+[[bin]]
+name = "test1"
+path = "src/test1.rs"
+
+
+
+
+[[bin]]
+name = "test2"
+path = "src/test2.rs"
+
+
+[[bin]]
+name = "test3"
+path = "src/test3.rs"
+
+
+[[bin]]
+name = "test4"
+path = "src/test4.rs"
+
+
+[[bin]]
+name = "test5"
+path = "src/test5.rs"
+
+[[bin]]
+name = "test6"
+path = "src/test6.rs"
+
+[[bin]]
+name = "test7"
+path = "src/test7.rs"
+
+
 [dependencies]
+# cargo add async-std
+async-std = "1.13.1"
+# cargo add futures
+futures = "0.3.31"
+# 开启全部功能的tokio，
+# 在了解tokio之后，只开启需要的特性，减少编译时间，减小编译大小
+# cargo add tokio -F full
+tokio = { version = "1.45.0", features = ["full"] }
