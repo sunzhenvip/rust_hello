@@ -27,13 +27,17 @@ fn parse_json(s: &str) {
 }
 
 fn parse_null(input: &str) -> IResult<&str, JsonValue> {
-    map(tag("null"), |_| JsonValue::Null)(input)  // 这么写 7.0版本可以
+    map(tag("null"), |_| JsonValue::Null)(input) // 这么写 7.1.3版本可以
+}
+
+fn parse_bool(input: &str) -> IResult<&str, JsonValue> {
+    alt((
+        map(tag("true"), |_| JsonValue::Bool(true)),
+        map(tag("false"), |_| JsonValue::Bool(false)),
+    ))(input)
 }
 
 fn main() {
     let input = "null";
-    match parse_null(input) {
-        Ok((remaining, value)) => println!("Parsed: {:?}, Remaining: {}", value, remaining),
-        Err(e) => println!("Error: {:?}", e),
-    }
+    println!("{:?}", parse_null(input));
 }
