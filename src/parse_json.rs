@@ -11,15 +11,17 @@ use nom::{
 };
 use std::collections::HashMap;
 
-#[derive(Debug)]
+#[derive(Debug)] // 调试使用
 enum JsonValue {
     Null,
     Num(f64),
     Bool(bool),
     Str(String),
     Array(Vec<JsonValue>),
-    Object(Vec<(String, JsonValue)>),
+    Object(Vec<(String, JsonValue)>), // 值是一个元组
 }
+
+
 
 fn main() {
     println!()
