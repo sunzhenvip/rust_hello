@@ -53,6 +53,7 @@ anyhow = "1.0.98"
 async-std = "1.13.1"
 # cargo add futures
 futures = "0.3.31"
+nom = "8.0.0"
 thiserror = "1.0.61"
 # 开启全部功能的tokio，
 # 在了解tokio之后，只开启需要的特性，减少编译时间，减小编译大小
