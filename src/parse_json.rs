@@ -9,6 +9,17 @@ use nom::{
     sequence::{delimited, pair, preceded, separated_pair, terminated},
     IResult,
 };
+use std::collections::HashMap;
+
+#[derive(Debug)]
+enum JsonValue {
+    Null,
+    Num(f64),
+    Bool(bool),
+    Str(String),
+    Array(Vec<JsonValue>),
+    Object(Vec<(String, JsonValue)>),
+}
 
 fn main() {
     println!()
