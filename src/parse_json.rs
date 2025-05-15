@@ -10,6 +10,7 @@ use nom::{
     IResult,
 };
 use std::collections::HashMap;
+use std::ffi::NulError;
 
 #[derive(Debug)] // 调试使用
 enum JsonValue {
@@ -21,10 +22,18 @@ enum JsonValue {
     Object(Vec<(String, JsonValue)>), // 值是一个元组
 }
 
-fn parse_json(s: &str)  {
+fn parse_json(s: &str) {
     todo!()
 }
 
+fn parse_null(input: &str) -> IResult<&str, JsonValue> {
+    map(tag("null"), |_| JsonValue::Null)(input)  // 这么写 7.0版本可以
+}
+
 fn main() {
-    println!()
+    let input = "null";
+    match parse_null(input) {
+        Ok((remaining, value)) => println!("Parsed: {:?}, Remaining: {}", value, remaining),
+        Err(e) => println!("Error: {:?}", e),
+    }
 }
