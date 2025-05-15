@@ -46,6 +46,10 @@ path = "src/test7.rs"
 name = "test8"
 path = "src/test8.rs"
 
+[[bin]]
+name = "parse_json"
+path = "src/parse_json.rs"
+
 
 [dependencies]
 anyhow = "1.0.98"
