@@ -37,7 +37,12 @@ fn parse_bool(input: &str) -> IResult<&str, JsonValue> {
     ))(input)
 }
 
-fn main() {
+
+fn test_null(){
     let input = "null";
     println!("{:?}", parse_null(input));
+}
+
+fn main() {
+    test_null()
 }
