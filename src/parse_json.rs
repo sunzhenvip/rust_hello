@@ -22,7 +22,7 @@ enum JsonValue {
     Bool(bool),
     Str(String),
     Array(Vec<JsonValue>),
-    Object(Vec<(String, JsonValue)>), // 值是一个元组
+    Object(HashMap<String, JsonValue>), // 值是一个元组
 }
 
 fn parse_json(s: &str) {
@@ -63,7 +63,14 @@ fn parse_value(input: &str) -> IResult<&str, JsonValue> {
     // "        " 中间可能有空格 前面的空格干掉
     preceded(
         multispace0,
-        alt((parse_null, parse_num, parse_bool, parse_str, parse_array)),
+        alt((
+            parse_null,
+            parse_num,
+            parse_bool,
+            parse_str,
+            parse_array,
+            parse_object,
+        )),
     )(input)
 }
 
@@ -77,7 +84,43 @@ fn parse_array(input: &str) -> IResult<&str, JsonValue> {
             ),
             preceded(multispace0, char(']')),
         ),
-        JsonValue::Array
+        JsonValue::Array,
+    )(input)
+}
+
+fn parse_object(input: &str) -> IResult<&str, JsonValue> {
+    //  separated_list1 这个函数返回一个动态数组
+    map(
+        delimited(
+            char('{'),
+            separated_list1(
+                preceded(multispace0, char(',')),  // 考虑空格
+                preceded(multispace0, parse_pair), // 写一个解析的模式
+            ),
+            preceded(multispace0, char('}')), // 右大括号
+        ),
+        |pairs| {
+            // 实际是key 和 value
+            let res = pairs
+                .into_iter()
+                .map(|(k, v)| {
+                    if let JsonValue::Str(key) = k {
+                        return (key, v);
+                    }
+                    panic!("Invalid key")
+                })
+                .collect();
+            JsonValue::Object(res)
+        },
+    )(input)
+}
+
+fn parse_pair(input: &str) -> IResult<&str, (JsonValue, JsonValue)> {
+    // 这个函数有三个模式
+    separated_pair(
+        preceded(multispace0, parse_str),   // 消除空格
+        preceded(multispace0, char(':')),   // 也可能有空格
+        preceded(multispace0, parse_value), // 也可能有空格
     )(input)
 }
 
@@ -102,9 +145,14 @@ fn test_array() {
     println!("{:?}", parse_array(r#"[1,2,3]"#));
 }
 
+
+fn test_object() {
+    println!("{:?}", parse_object(r#"{"key": "value"}"#));
+}
 fn main() {
     test_null();
     test_num();
     test_str();
     test_array();
+    test_object();
 }
