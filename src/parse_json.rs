@@ -25,10 +25,6 @@ enum JsonValue {
     Object(HashMap<String, JsonValue>), // 值是一个元组
 }
 
-fn parse_json(s: &str) {
-    todo!()
-}
-
 fn parse_null(input: &str) -> IResult<&str, JsonValue> {
     map(tag("null"), |_| JsonValue::Null)(input) // 这么写 7.1.3版本可以
 }
@@ -145,14 +141,41 @@ fn test_array() {
     println!("{:?}", parse_array(r#"[1,2,3]"#));
 }
 
-
 fn test_object() {
     println!("{:?}", parse_object(r#"{"key": "value"}"#));
 }
+
+fn parse_json(s: &str) -> IResult<&str, JsonValue> {
+    // 需要两个模式  匹配成功之后 不要 后面 只要前面的结果
+    terminated(
+        preceded(multispace0, parse_value), // 消除前面空格
+        multispace0,                        // 消除后面 空格
+    )(s)
+}
+
+
+fn test_json(){
+    let json_str = r#"
+        {
+            "nickname": "张三",
+            "age": 30,
+            "is_teacher": false,
+            "scores": [90, 85, 95],
+            "address": {
+                "city": "北京",
+                "street": "中关村大街",
+                "code": [200, 2000]
+            }
+        }
+    "#;
+    println!("{:?}", parse_json(json_str));
+}
+
 fn main() {
     test_null();
     test_num();
     test_str();
     test_array();
     test_object();
+    test_json();
 }
