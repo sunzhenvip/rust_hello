@@ -1,6 +1,6 @@
 #![allow(unused_imports)] // 作用于整个文件 消除没有使用的导入警告
 #![allow(dead_code)] // 消除 未使用的类型/函数/枚举变体 警告
-#![allow(unused_variables)]  // 消除 未使用的变量/参数
+#![allow(unused_variables)] // 消除 未使用的变量/参数
 use nom::bytes::complete::take_while;
 use nom::combinator::opt;
 use nom::{
@@ -40,12 +40,28 @@ fn parse_bool(input: &str) -> IResult<&str, JsonValue> {
     ))(input)
 }
 
+fn parse_num(input: &str) -> IResult<&str, JsonValue> {
+    // digit1 表示数字 pair 要求匹配魔 opt 可选
+    map(recognize(pair(opt(char('-')), digit1)), |s: &str| {
+        JsonValue::Num(s.parse().unwrap())
+    })(input)
+}
 
-fn test_null(){
+fn test_null() {
     let input = "null";
     println!("{:?}", parse_null(input));
 }
 
+fn test_num() {
+    let input = "-848";
+    println!("{:?}", parse_num(input));
+
+
+    let input = "郑州";
+    println!("{:?}", parse_num(input));
+}
+
 fn main() {
-    test_null()
+    test_null();
+    test_num();
 }
