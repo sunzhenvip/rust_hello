@@ -58,6 +58,29 @@ fn parse_str(input: &str) -> IResult<&str, JsonValue> {
     )(input)
 }
 
+fn parse_value(input: &str) -> IResult<&str, JsonValue> {
+    // 依次进行匹配
+    // "        " 中间可能有空格 前面的空格干掉
+    preceded(
+        multispace0,
+        alt((parse_null, parse_num, parse_bool, parse_str, parse_array)),
+    )(input)
+}
+
+fn parse_array(input: &str) -> IResult<&str, JsonValue> {
+    map(
+        delimited(
+            char('['),
+            separated_list0(
+                preceded(multispace0, char(',')),
+                preceded(multispace0, parse_value),
+            ),
+            preceded(multispace0, char(']')),
+        ),
+        JsonValue::Array
+    )(input)
+}
+
 fn test_null() {
     let input = "null";
     println!("{:?}", parse_null(input));
@@ -71,14 +94,17 @@ fn test_num() {
     println!("{:?}", parse_num(input));
 }
 
-
 fn test_str() {
     println!("{:?}", parse_str(r#""hello""#));
 }
 
+fn test_array() {
+    println!("{:?}", parse_array(r#"[1,2,3]"#));
+}
 
 fn main() {
     test_null();
     test_num();
     test_str();
+    test_array();
 }
