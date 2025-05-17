@@ -47,6 +47,17 @@ fn parse_num(input: &str) -> IResult<&str, JsonValue> {
     })(input)
 }
 
+fn parse_str(input: &str) -> IResult<&str, JsonValue> {
+    map(
+        delimited(
+            char('"'), // 是不是有双引号开头结尾也是双引号 有可能是字符串类型
+            take_while(|c| c != '"'),
+            char('"'),
+        ),
+        |s: &str| JsonValue::Str(s.to_string()),
+    )(input)
+}
+
 fn test_null() {
     let input = "null";
     println!("{:?}", parse_null(input));
@@ -56,12 +67,18 @@ fn test_num() {
     let input = "-848";
     println!("{:?}", parse_num(input));
 
-
     let input = "郑州";
     println!("{:?}", parse_num(input));
 }
 
+
+fn test_str() {
+    println!("{:?}", parse_str(r#""hello""#));
+}
+
+
 fn main() {
     test_null();
     test_num();
+    test_str();
 }
