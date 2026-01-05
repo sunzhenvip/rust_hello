@@ -29,7 +29,7 @@ fn main() {
         manager: Manager { text: "hello" },
     };
 
-    list.get_interface().noop();
+    list.get_interface().noop(); // 为什么这次可以缩短生命周期了？  其实涉及到了一个点 reborrow重借用的一个问题？
 
     println!("Interface should be dropped here and the borrow released");
 
