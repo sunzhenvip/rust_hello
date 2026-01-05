@@ -1,5 +1,7 @@
 struct Interface<'a> {
     manager: &'a mut Manager<'a>
+    // 这种情况如果两个生命周期一样的话容易出错
+    // 容易会常见一些 会被 mut borrow 多次
 }
 
 /*
@@ -65,6 +67,6 @@ fn main() {
     // use_list(&list);
 }
 
-fn use_list(list: &&List) {
+fn use_list(list: &List) {
     println!("{}", list.manager.text);
 }
