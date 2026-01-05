@@ -9,6 +9,7 @@ fn foo<T>(_input: &'static T) { // &'static 只能代表一种引用 不可变�
     println!("foo works");
 }
 
-fn bar<T: 'static>(_input: &T) { // 如果T这个类型含有引用的话 他的引用一定比static长或者相等
+
+fn bar<T: 'static>(_input: &T) { // 如果T这个类型含有引用的话 他的引用一定比static长或者相等,
     println!("bar works");
 }
