@@ -27,5 +27,9 @@ fn f3sr<'b, 'a>(rb: &'b mut &'a S) -> &'a S {
 }
 
 fn f4sr<'b, 'a>(rb: &'b mut &'a mut S) -> &'a S {
-    *rb // &'a mut S 转换为 &'c mut S => 'c : 'b
+    *rb // 报错
+}
+
+fn f4sr_1<'b: 'a, 'a>(rb: &'b mut &'a mut S) -> &'a S {
+    *rb // 通过
 }
