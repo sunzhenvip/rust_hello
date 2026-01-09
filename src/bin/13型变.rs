@@ -21,3 +21,17 @@ fn main() {
 // long 的 生命周期比 short 长
 
 // 子类对象 可以赋值 给父类类型 的引用
+
+
+trait Animal {}
+struct Dog;
+impl Animal for Dog {}
+
+// 接受 Box<dyn Animal> 的函数
+fn feed_animal(animal: Box<dyn Animal>) {}
+
+fn test() {
+    let dog: Box<Dog> = Box::new(Dog);
+
+    feed_animal(dog); // 协变：Box<Dog> 当作 Box<dyn Animal>
+}
